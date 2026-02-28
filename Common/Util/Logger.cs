@@ -16,6 +16,7 @@ public class Logger(string moduleName)
             var now = DateTime.Now;
             var showTime = ShouldShowTimeInLog();
             var timeText = now.ToString("HH:mm:ss");
+            /*
             var savedInput = IConsole.Input.ToList(); // Copy
             IConsole.RedrawInput("", false);
             var timeMarkup = showTime ? $"[[[bold deepskyblue3_1]{timeText}[/]]] " : string.Empty;
@@ -23,7 +24,7 @@ public class Logger(string moduleName)
                                          $"[[[gray]{moduleName}[/]]] [[[{(ConsoleColor)level}]{level}[/]]] {message.Replace("[", "[[").Replace("]", "]]")}\n"));
 
             IConsole.RedrawInput(savedInput);
-
+            */
             var logMessage = showTime
                 ? $"[{timeText}] [{moduleName}] [{level}] {message}"
                 : $"[{moduleName}] [{level}] {message}";
