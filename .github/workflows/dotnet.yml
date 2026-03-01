@@ -32,18 +32,13 @@ jobs:
 
     - name: 推送 win-x64
       run: |
-        dotnet publish Program\Program.csproj -o Release\win-x64 -r win-x64 --framework net9.0 -p:PublishSingleFile=true
-        Remove-Item -Path "Release\win-x64\*.dtb" -Force -ErrorAction SilentlyContinue
-
+        dotnet publish Program\Program.csproj -o Release\win-x64 -r win-x64 --framework net9.0 -p:PublishSingleFile=true -p:CopyOutputSymbolsToPublishDirectory=false
     - name: 推送 linux-x64
       run: |
-        dotnet publish Program\Program.csproj -o Release\linux-x64 -r linux-x64 --framework net9.0 -p:PublishSingleFile=true
-        Remove-Item -Path "Release\win-x64\*.dtb" -Force -ErrorAction SilentlyContinue
-
+        dotnet publish Program\Program.csproj -o Release\linux-x64 -r linux-x64 --framework net9.0 -p:PublishSingleFile=true -p:CopyOutputSymbolsToPublishDirectory=false
     - name: 推送 linux-arm64
       run: |
-        dotnet publish Program\Program.csproj -o Release\linux-arm64 -r linux-arm64 --framework net9.0 -p:PublishSingleFile=true
-        Remove-Item -Path "Release\linux-arm64\*.dtb" -Force -ErrorAction SilentlyContinue
+        dotnet publish Program\Program.csproj -o Release\linux-arm64 -r linux-arm64 --framework net9.0 -p:PublishSingleFile=true -p:CopyOutputSymbolsToPublishDirectory=false
 
     - name: 上传 win-x64构建产物
       uses: actions/upload-artifact@v4.3.1
