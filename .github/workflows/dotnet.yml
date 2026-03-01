@@ -22,36 +22,42 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup .NET
+    - name: 设置 .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 9.0.x
 
-    - name: Restore dependencies
+    - name: 还原依赖项
       run: dotnet restore
 
-    - name: Publish win-x64
-      run: dotnet publish Program\Program.csproj -o Release\win-x64 -r win-x64 --framework net9.0 -p:PublishSingleFile=true
+    - name: 推送 win-x64
+      run: |
+        dotnet publish Program\Program.csproj -o Release\win-x64 -r win-x64 --framework net9.0 -p:PublishSingleFile=true
+        Remove-Item -Path "Release\win-x64\*.dtb" -Force -ErrorAction SilentlyContinue
 
-    - name: Publish linux-x64
-      run: dotnet publish Program\Program.csproj -o Release\linux-x64 -r linux-x64 --framework net9.0 -p:PublishSingleFile=true
+    - name: 推送 linux-x64
+      run: |
+        dotnet publish Program\Program.csproj -o Release\linux-x64 -r linux-x64 --framework net9.0 -p:PublishSingleFile=true
+        Remove-Item -Path "Release\win-x64\*.dtb" -Force -ErrorAction SilentlyContinue
 
-    - name: Publish linux-arm64
-      run: dotnet publish Program\Program.csproj -o Release\linux-arm64 -r linux-arm64 --framework net9.0 -p:PublishSingleFile=true
+    - name: 推送 linux-arm64
+      run: |
+        dotnet publish Program\Program.csproj -o Release\linux-arm64 -r linux-arm64 --framework net9.0 -p:PublishSingleFile=true
+        Remove-Item -Path "Release\linux-arm64\*.dtb" -Force -ErrorAction SilentlyContinue
 
-    - name: Upload win-x64 Build Artifact
+    - name: 上传 win-x64构建产物
       uses: actions/upload-artifact@v4.3.1
       with:
         name: HyacineDH-win-64
         path: Release\win-x64
 
-    - name: Upload linux-x64 Build Artifact
+    - name: 上传 linux-x64构建产物
       uses: actions/upload-artifact@v4.3.1
       with:
         name: HyacineDH-linux-x64
         path: Release\linux-x64
 
-    - name: Upload linux-arm64 Build Artifact
+    - name: 上传 linux-arm64构建产物
       uses: actions/upload-artifact@v4.3.1
       with:
         name: HyacineDH-linux-arm64
