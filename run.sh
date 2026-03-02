@@ -16,20 +16,24 @@ unzip -o $1 && rm -rf $1;
 }
 
 termux_set(){
+    arch=$(uname -m)
     clear
     echo "欢迎使用该设置脚本~"
-
     echo "正在换源"
     echo "有(y/n)的选y"
     echo "有Default的直接按回车"
     wait_press 
     sed -i 's@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.cernet.edu.cn/termux/apt/termux-main stable main@' $PREFIX/etc/apt/sources.list
     apt update && apt upgrade -y
-    pkg install -y proot-distro 
+    pkg install -y proot-distro curl
+
     clear
     echo "正在安装ubuntu"
     echo "请自行检查网络设置"
     wait_press
+    mkdir -p $PREFIX/var/lib/proot-distro/dlcache
+    curl -L -o ubuntu-questing-$arch-pd-v4.30.1.tar.xz  https://gh-proxy.org/github.com/termux/proot-distro/releases/download/v4.30.1/ubuntu-questing-$arch-pd-v4.30.1.tar.xz;
+    cp $HOME/ubuntu-questing-$arch-pd-v4.30.1.tar.xz $PREFIX/var/lib/proot-distro/dlcache/
     proot-distro install ubuntu
     touch ~/termux_finished
 
@@ -62,8 +66,6 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
     download "linux-arm64.zip" "1.3.0"
     mkdir -p Resources && cd Resources;
     download "Resources.zip" "1.1.0"
-    cd ../;
-    chmod 0777 -R ./;
     cd;
     rm -rf ~/termux_finished
     touch ~/ubuntu_finished
@@ -79,7 +81,7 @@ starting_set(){
 
 if [[ -f ~/termux_finished ]];then
     echo "检测到ubuntu已安装完成"
-    echo "检测到配置未完成，是否继续？(y/n)(默认:n)"
+    echo "检测到配置未完成，是否继续？(y/n)"
     read -r answer
     if [[ $answer =~ ^[Yy] ]]; then
         proot-distro login ubuntu --termux-home -- bash -c "$(declare -f ubuntu_set download); ubuntu_set"
