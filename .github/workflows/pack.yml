@@ -1,0 +1,22 @@
+name: pack
+
+permissions:
+  actions: write
+  contents: write
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+
+    runs-on: linux-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 拉取资源
+      run: |
+        apt update && apt upgrade -y
+        apt install -y git
+        git clone https://github.com/DimbreathBot/TurnBasedGameData.git

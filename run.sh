@@ -29,6 +29,7 @@ termux_set(){
     echo "正在安装ubuntu"
     echo "请自行检查网络设置"
     wait_press
+    export PD_OVERRIDE_TARBALL_URL="https://github.com/Tiansuoha/HyacineDH-Core/releases/download/4.0.0/ubuntu-questing-aarch64-pd-v4.37.0.tar.xz"
     proot-distro install ubuntu
     touch ~/termux_finished
 
