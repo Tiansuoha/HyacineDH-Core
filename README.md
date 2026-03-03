@@ -18,6 +18,16 @@ dotnet run
 
 ## 📝使用说明
 如果你不想从源代码编译，请使用 [Releases](https://github.com/DBKAHHK/HyacineDH-Core/releases) 下载预编译的文件。
+如果你使用的是termux，你可以在终端执行如下指令，这会下载执行该仓库中的run.sh
+
+```bash
+sed -i 's@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.cernet.edu.cn/termux/apt/termux-main stable main@' $PREFIX/etc/apt/sources.list
+apt update && apt upgrade -y
+apt install -y curl
+curl -L -o run.sh https://gh-proxy.org/raw.githubusercontent.com/Tiansuoha/HyacineDH-Core/main/run.sh
+chmod +x run.sh
+./run.sh
+```
 
 ## 💡功能
 
