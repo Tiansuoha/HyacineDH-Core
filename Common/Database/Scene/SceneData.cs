@@ -1,4 +1,4 @@
-﻿using HyacineCore.Server.Data;
+using HyacineCore.Server.Data;
 using HyacineCore.Server.Enums.Scene;
 using HyacineCore.Server.Proto;
 using HyacineCore.Server.Util;
@@ -82,11 +82,19 @@ public class SwitchHandInfo
     public uint State { get; set; } = 101;
     public byte[] ByteValue { get; set; } = [];
 
-    public BLGGKBFPOPD ToProto()
+    public HandInfo ToProto()
     {
-        return new BLGGKBFPOPD
+        return new HandInfo
         {
-            ConfigId = (uint)ConfigId
+            ConfigId = (uint)ConfigId,
+            CoinNum = (uint)CoinNum,
+            HandState = State,
+            HandByteValue = ByteString.CopyFrom(ByteValue),
+            HandMotion = new MotionInfo
+            {
+                Pos = Pos.ToProto(),
+                Rot = Rot.ToProto()
+            }
         };
     }
 }

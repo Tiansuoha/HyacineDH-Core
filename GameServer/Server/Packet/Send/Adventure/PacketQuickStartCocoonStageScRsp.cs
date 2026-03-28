@@ -1,4 +1,4 @@
-﻿using HyacineCore.Server.GameServer.Game.Battle;
+using HyacineCore.Server.GameServer.Game.Battle;
 using HyacineCore.Server.Kcp;
 using HyacineCore.Server.Proto;
 
@@ -23,7 +23,7 @@ public class PacketQuickStartCocoonStageScRsp : BasePacket
         {
             CocoonId = (uint)cocoonId,
             Wave = (uint)wave,
-            IHIAFPLIPEK = (uint)wave,
+            CocoonChallengeTimes = (uint)wave,
             BattleInfo = battle.ToProto()
         };
 

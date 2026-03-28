@@ -38,56 +38,56 @@ public class FriendDevelopmentInfoPb
     public long Time { get; set; } = Extensions.GetUnixSec();
     public Dictionary<string, uint> Params { get; set; } = [];
 
-    public JJPBEKAPFCF ToProto()
+    public FriendDevelopmentInfo ToProto()
     {
-        var proto = new JJPBEKAPFCF
+        var proto = new FriendDevelopmentInfo
         {
             Time = Time,
-            OKJNGOKPAIJ = DevelopmentType
+            DevelopmentType = DevelopmentType
         };
 
         switch (DevelopmentType)
         {
-            case DevelopmentType.LhjmkmeiklkPmfjffapajo: // DevelopmentNone
-            case DevelopmentType.LhjmkmeiklkOanphkgagoa: // DevelopmentActivityStart
-            case DevelopmentType.LhjmkmeiklkGhjonnnkdoh: // DevelopmentActivityEnd
-            case DevelopmentType.LhjmkmeiklkNbbojikjnhd: // DevelopmentRogueMagic
+            case DevelopmentType.DevelopmentNone: // DevelopmentNone
+            case DevelopmentType.DevelopmentActivityStart: // DevelopmentActivityStart
+            case DevelopmentType.DevelopmentActivityEnd: // DevelopmentActivityEnd
+            case DevelopmentType.DevelopmentRogueMagic: // DevelopmentRogueMagic
                 break;
-            case DevelopmentType.LhjmkmeiklkOglnogiknci: // DevelopmentRogueCosmos
-            case DevelopmentType.LhjmkmeiklkCkhmlokakoh: // DevelopmentRogueChessNous
-            case DevelopmentType.LhjmkmeiklkOhlmfhpeagj: // DevelopmentRogueChess
-                proto.EGGAKPPLBHE = new FGLAPFKJIPO
+            case DevelopmentType.DevelopmentRogueCosmos: // DevelopmentRogueCosmos
+            case DevelopmentType.DevelopmentRogueChessNous: // DevelopmentRogueChessNous
+            case DevelopmentType.DevelopmentRogueChess: // DevelopmentRogueChess
+                proto.RogueDevelopmentInfo = new FriendRogueDevelopmentInfo
                 {
                     AreaId = Params.GetValueOrDefault("AreaId", 0u)
                 };
                 break;
-            case DevelopmentType.LhjmkmeiklkDbfjdbiefdb: // DevelopmentMemoryChallenge
-            case DevelopmentType.LhjmkmeiklkMnkocfkkmbe: // DevelopmentStoryChallenge
-            case DevelopmentType.LhjmkmeiklkGmopdopmgfn: // DevelopmentBossChallenge
-                proto.OGCJCPPNHFP = new DMBACEALDKB
+            case DevelopmentType.DevelopmentMemoryChallenge: // DevelopmentMemoryChallenge
+            case DevelopmentType.DevelopmentStoryChallenge: // DevelopmentStoryChallenge
+            case DevelopmentType.DevelopmentBossChallenge: // DevelopmentBossChallenge
+                proto.ChallengeDevelopmentInfo = new FriendChallengeDevelopmentInfo
                 {
                     ChallengeId = Params.GetValueOrDefault("ChallengeId", 0u)
                 };
                 break;
-            case DevelopmentType.LhjmkmeiklkCooihblilbb: // DevelopmentUnlockAvatar
+            case DevelopmentType.DevelopmentUnlockAvatar: // DevelopmentUnlockAvatar
                 proto.AvatarId = Params.GetValueOrDefault("AvatarId", 0u);
                 break;
-            case DevelopmentType.LhjmkmeiklkDfjcoioache: // DevelopmentUnlockEquipment
-                proto.DCFLOABJONG = Params.GetValueOrDefault("EquipmentTid", 0u);
+            case DevelopmentType.DevelopmentUnlockEquipment: // DevelopmentUnlockEquipment
+                proto.EquipmentTid = Params.GetValueOrDefault("EquipmentTid", 0u);
                 break;
-            case DevelopmentType.LhjmkmeiklkPcdcmpfnmjh: // DevelopmentRogueTourn
-            case DevelopmentType.LhjmkmeiklkKbokednfkhh: // DevelopmentRogueTournWeek
-            case DevelopmentType.LhjmkmeiklkHbdolkcaild: // DevelopmentRogueTournDivision
-                proto.MKADMLIACDF = new IIBGDBBPDJI
+            case DevelopmentType.DevelopmentRogueTourn: // DevelopmentRogueTourn
+            case DevelopmentType.DevelopmentRogueTournWeek: // DevelopmentRogueTournWeek
+            case DevelopmentType.DevelopmentRogueTournDivision: // DevelopmentRogueTournDivision
+                proto.RogueTournDevelopmentInfo = new FriendRogueTournDevelopmentInfo
                 {
-                    AreaId = Params.GetValueOrDefault("AreaId", 0u),
-                    DBCGCKKHKGG = Params.GetValueOrDefault("FinishTournDifficulty", 0u)
+                    ChallengeId = Params.GetValueOrDefault("ChallengeId", 0u)
                 };
                 break;
-            case DevelopmentType.LhjmkmeiklkAogdffkokmc: // DevelopmentChallengePeak
-                proto.JMJOCLIJOAH = new OLLHKKBBAJI
+            case DevelopmentType.DevelopmentChallengePeak: // DevelopmentChallengePeak
+                proto.ChallengePeakDevelopmentInfo = new FriendChallengePeakDevelopmentInfo
                 {
-                    PeakId = Params.GetValueOrDefault("PeakLevelId", 0u)
+                    PeakLevelId = Params.GetValueOrDefault("PeakLevelId", 0u),
+                    AreaId = Params.GetValueOrDefault("AreaId", 0u)
                 };
                 break;
         }

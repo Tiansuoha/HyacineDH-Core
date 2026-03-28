@@ -1,4 +1,4 @@
-﻿using HyacineCore.Server.Data;
+using HyacineCore.Server.Data;
 using HyacineCore.Server.Data.Excel;
 using HyacineCore.Server.Database;
 using HyacineCore.Server.Database.Avatar;
@@ -53,7 +53,7 @@ public class AvatarManager(PlayerInstance player) : BasePlayerManager(player)
             // add development
             Player.FriendRecordData!.AddAndRemoveOld(new FriendDevelopmentInfoPb
             {
-                DevelopmentType = DevelopmentType.LhjmkmeiklkCooihblilbb,
+                DevelopmentType = DevelopmentType.DevelopmentUnlockAvatar,
                 Params = { { "AvatarId", (uint)avatarExcel.AvatarID } }
             });
 

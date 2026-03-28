@@ -1,4 +1,4 @@
-﻿using HyacineCore.Server.GameServer.Server.Packet.Send.Adventure;
+using HyacineCore.Server.GameServer.Server.Packet.Send.Adventure;
 using HyacineCore.Server.Kcp;
 using HyacineCore.Server.Proto;
 
@@ -11,7 +11,7 @@ public class HandlerQuickStartCocoonStageCsReq : Handler
     {
         var req = QuickStartCocoonStageCsReq.Parser.ParseFrom(data);
         // Different proto sets may use either Wave or IHIAFPLIPEK for challenge times.
-        var wave = (int)(req.Wave > 0 ? req.Wave : req.IHIAFPLIPEK);
+        var wave = (int)(req.Wave > 0 ? req.Wave : 1);
         if (wave <= 0) wave = 1;
 
         var battle =

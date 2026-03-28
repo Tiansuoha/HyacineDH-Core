@@ -41,9 +41,9 @@ public partial class PlayerInstance
         GameData.InteractConfigData.TryGetValue(interactId, out var config);
         if (config == null || config.SrcState != prop.State) return prop;
         var oldState = prop.State;
-        await prop.SetState(config.TargetState);
-        var newState = prop.State;
-        await SendPacket(new PacketGroupStateChangeScNotify(Data.EntryId, prop.GroupId, prop.State));
+        // send state change so client sees chest/puzzle updates immediately
+        await prop.SetState(config.TargetState, true); // This should handle the state sync packet internally.
+        var newState = prop.State; // The new state is now set.
 
         switch (prop.Excel.PropType)
         {

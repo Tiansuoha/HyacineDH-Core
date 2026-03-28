@@ -14,9 +14,6 @@ public class PacketGetChallengePeakDataScRsp : BasePacket
             CurrentPeakGroupId = player.ChallengePeakManager?.GetCurrentPeakGroupId() ?? 1
         };
 
-        foreach (var groupId in GameData.ChallengePeakGroupConfigData.Keys.OrderBy(x => x))
-            proto.ChallengePeakGroups.Add(player.ChallengePeakManager!.BuildGroup(groupId));
-
         SetData(proto);
     }
 }

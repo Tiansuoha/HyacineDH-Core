@@ -10,7 +10,7 @@ public class PacketSwitchHandDataScRsp : BasePacket
     {
         var proto = new SwitchHandDataScRsp
         {
-            BMLBGBOKCJO = { info.ToProto() }
+            TargetHandInfo = { info.ToProto() }
         };
 
         SetData(proto);
@@ -20,7 +20,7 @@ public class PacketSwitchHandDataScRsp : BasePacket
     {
         var proto = new SwitchHandDataScRsp
         {
-            BMLBGBOKCJO = { infos.Select(x => x.ToProto()) }
+            TargetHandInfo = { infos.Select(x => x.ToProto()) }
         };
 
         SetData(proto);

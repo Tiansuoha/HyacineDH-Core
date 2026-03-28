@@ -58,12 +58,12 @@ public class ChallengeBossInstance(PlayerInstance player, ChallengeDataPb data)
 
     public override void SetStartPos(Position pos)
     {
-        Data.Boss.StartPos = pos.ToVector();
+        Data.Boss.StartPos = pos.ToProto();
     }
 
     public override void SetStartRot(Position rot)
     {
-        Data.Boss.StartRot = rot.ToVector();
+        Data.Boss.StartRot = rot.ToProto();
     }
 
     public override void SetSavedMp(int mp)
@@ -93,7 +93,8 @@ public class ChallengeBossInstance(PlayerInstance player, ChallengeDataPb data)
             {
                 CurBossBuffs = new ChallengeBossBuffList
                 {
-                    BuffList = { Data.Boss.Buffs }
+                    BuffList = { Data.Boss.Buffs },
+                    BossGroupConst = 1
                 }
             },
             RoundCount = (uint)Config.ChallengeCountDown,
@@ -115,7 +116,8 @@ public class ChallengeBossInstance(PlayerInstance player, ChallengeDataPb data)
                 SecondNode = new ChallengeBossSingleNodeInfo
                 {
                     BuffId = Data.Boss.Buffs[1]
-                }
+                },
+                NCBDNPGPEAI = true
             }
         };
 
@@ -198,9 +200,6 @@ public class ChallengeBossInstance(PlayerInstance player, ChallengeDataPb data)
 
     public override async ValueTask OnBattleEnd(BattleInstance battle, PVEBattleResultCsReq req)
     {
-        // Default to failure; successful stage clear will set true in AdvanceStage().
-        IsWin = false;
-
         // Calculate score for current stage
         var stageScore = 0;
         foreach (var battleTarget in req.Stt.BattleTargetInfo[1].BattleTargetList_)
@@ -240,10 +239,9 @@ public class ChallengeBossInstance(PlayerInstance player, ChallengeDataPb data)
                 {
                     // Fail challenge
                     Data.Boss.CurStatus = (int)ChallengeStatus.ChallengeFailed;
-                    IsWin = false;
 
                     // Send challenge result data
-                    await Player.SendPacket(new PacketChallengeBossPhaseSettleNotify(this, isReward: true));
+                    await Player.SendPacket(new PacketChallengeBossPhaseSettleNotify(this));
                 }
 
                 break;
@@ -274,10 +272,7 @@ public class ChallengeBossInstance(PlayerInstance player, ChallengeDataPb data)
 
     private async ValueTask AdvanceStage(PVEBattleResultCsReq req)
     {
-        var isFinalStage = IsPartialChallenge || Data.Boss.CurrentStage >= Config.StageNum;
-        IsWin = isFinalStage;
-
-        if (isFinalStage)
+        if (Data.Boss.CurrentStage >= Config.StageNum)
         {
             // Last stage
             Data.Boss.CurStatus = (int)ChallengeStatus.ChallengeFinish;
@@ -287,8 +282,8 @@ public class ChallengeBossInstance(PlayerInstance player, ChallengeDataPb data)
             Player.ChallengeManager!.AddHistory((int)Data.Boss.ChallengeMazeId, (int)GetStars(), GetTotalScore());
 
             // Send challenge result data
-            await Player.SendPacket(new PacketChallengeBossPhaseSettleNotify(this, req.Stt.BattleTargetInfo[1],
-                isReward: true));
+            await Player.SendPacket(new PacketChallengeBossPhaseSettleNotify(this, req.Stt.BattleTargetInfo[1]));
+            await Player.SendPacket(new PacketChallengeSettleNotify(this));
 
             // Call MissionManager
             await Player.MissionManager!.HandleFinishType(MissionFinishTypeEnum.ChallengeFinish, this);
@@ -299,70 +294,48 @@ public class ChallengeBossInstance(PlayerInstance player, ChallengeDataPb data)
             // add development
             Player.FriendRecordData!.AddAndRemoveOld(new FriendDevelopmentInfoPb
             {
-                DevelopmentType = DevelopmentType.LhjmkmeiklkGmopdopmgfn,
+                DevelopmentType = DevelopmentType.DevelopmentBossChallenge,
                 Params = { { "ChallengeId", (uint)Config.ID } }
             });
         }
         else
         {
-            await Player.SendPacket(new PacketChallengeBossPhaseSettleNotify(this, req.Stt.BattleTargetInfo[1],
-                isReward: false));
+            await Player.SendPacket(new PacketChallengeBossPhaseSettleNotify(this, req.Stt.BattleTargetInfo[1]));
         }
     }
 
-    public async ValueTask<bool> NextPhase()
+    public async ValueTask NextPhase()
     {
-        // Already at last node, cannot enter next phase.
-        if (Data.Boss.CurrentStage >= Config.StageNum)
-            return false;
-
-        var secondLineup = Player.LineupManager?.GetExtraLineup(ExtraLineupType.LineupChallenge2);
-        Player.LineupManager?.SanitizeLineup(secondLineup);
-        if (secondLineup?.BaseAvatars == null || secondLineup.BaseAvatars.Count == 0)
-            return false;
-
         // Increment and reset stage
         Data.Boss.CurrentStage++;
 
-        // Same entryId (most boss mazes): just swap the monster groups in-place.
-        // Different entryId: enter the second node scene, then load groups on the new scene.
-        var enterEntryId = Config.MapEntranceID2 != 0 ? Config.MapEntranceID2 : Player.Data.EntryId;
-        var isSameEntry = enterEntryId == Player.Data.EntryId;
-
-        if (isSameEntry)
-        {
-            // unload stage 1 groups, load stage 2 groups
-            await Player.SceneInstance!.EntityLoader!.UnloadGroup(Config.MazeGroupID1, sendPacket: true);
-            await Player.SceneInstance!.EntityLoader!.LoadGroup(Config.MazeGroupID2, sendPacket: true);
-        }
+        // unload current scene group
+        await Player.SceneInstance!.EntityLoader!.UnloadGroup(Config.MazeGroupID1);
+        // Load scene group for stage 2
+        await Player.SceneInstance!.EntityLoader!.LoadGroup(Config.MazeGroupID2);
 
         // Change player line up
         SetCurrentExtraLineup(ExtraLineupType.LineupChallenge2);
-        await Player.LineupManager!.SetExtraLineup((ExtraLineupType)GetCurrentExtraLineupType(), notify: false);
+        await Player.LineupManager!.SetExtraLineup((ExtraLineupType)GetCurrentExtraLineupType());
         await Player.SendPacket(new PacketChallengeLineupNotify((ExtraLineupType)GetCurrentExtraLineupType()));
         await Player.SceneInstance!.SyncLineup();
 
         Data.Boss.SavedMp = (uint)Player.LineupManager.GetCurLineup()!.Mp;
 
         // Move player
-        if (!isSameEntry)
+        if (Config.MapEntranceID2 != 0)
         {
-            // LC behavior: NextPhase scene switch relies on EnterChallengeNextPhaseScRsp.Scene,
-            // so avoid sending normal EnterSceneByServerScNotify here.
-            await Player.EnterScene(enterEntryId, 0, false);
-            Data.Boss.StartPos = Player.Data.Pos!.ToVector();
-            Data.Boss.StartRot = Player.Data.Rot!.ToVector();
-            if (Config.MazeGroupID1 != 0)
-                await Player.SceneInstance!.EntityLoader!.UnloadGroup(Config.MazeGroupID1, sendPacket: false);
-            await Player.SceneInstance!.EntityLoader!.LoadGroup(Config.MazeGroupID2, sendPacket: false);
+            await Player.EnterScene(Config.MapEntranceID2, 0, false);
+            Data.Boss.StartPos = Player.Data.Pos!.ToProto();
+            Data.Boss.StartRot = Player.Data.Rot!.ToProto();
+            await Player.SceneInstance!.EntityLoader!.LoadGroup(Config.MazeGroupID2);
         }
-        else if (Config.MapEntranceID2 == 0)
+        else
         {
             await Player.MoveTo(Data.Boss.StartPos.ToPosition(), Data.Boss.StartRot.ToPosition());
         }
 
         Player.ChallengeManager!.SaveInstance(this);
-        return true;
     }
 
     #endregion

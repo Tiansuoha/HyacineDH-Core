@@ -22,14 +22,11 @@ public static class ChatMessageBuilder
             CreateTime = createTime ?? (ulong)Extensions.GetUnixSec(),
             ChatData = chatData,
             MessageData = messageData,
-            BOFJJHIKIJL = new DABBFCOAFJG
-            {
-                Uid = senderUid
-            }
+            SourceData = new SourceData { Uid = senderUid }
         };
 
         // Some clients read repeated message payloads instead of the singular field.
-        chat.DMFMJNNNAFA.Add(messageData);
+        chat.MessageChatDataList.Add(messageData);
         return chat;
     }
 
@@ -50,14 +47,11 @@ public static class ChatMessageBuilder
             CreateTime = createTime ?? (ulong)Extensions.GetUnixSec(),
             ChatData = chatData,
             MessageData = messageData,
-            BOFJJHIKIJL = new DABBFCOAFJG
-            {
-                Uid = senderUid
-            }
+            SourceData = new SourceData { Uid = senderUid }
         };
 
         // Some clients read repeated message payloads instead of the singular field.
-        chat.DMFMJNNNAFA.Add(messageData);
+        chat.MessageChatDataList.Add(messageData);
         return chat;
     }
 }

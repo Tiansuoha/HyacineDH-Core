@@ -19,8 +19,8 @@ public class PacketSetAvatarEnhancedIdScRsp : BasePacket
     {
         var proto = new SetAvatarEnhancedIdScRsp
         {
-            UnkEnhancedId = (uint)enhanceId,
-            GrowthAvatarId = avatarId
+            CurEnhanceId = (uint)enhanceId,
+            SetTargetAvatarId = avatarId
         };
 
         SetData(proto);

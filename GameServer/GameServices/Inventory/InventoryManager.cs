@@ -1,4 +1,4 @@
-﻿using System.Collections.Frozen;
+using System.Collections.Frozen;
 using HyacineCore.Server.Data;
 using HyacineCore.Server.Database;
 using HyacineCore.Server.Database.Friend;
@@ -70,7 +70,7 @@ public class InventoryManager(PlayerInstance player) : BasePlayerManager(player)
                     // add development
                     Player.FriendRecordData!.AddAndRemoveOld(new FriendDevelopmentInfoPb
                     {
-                        DevelopmentType = DevelopmentType.LhjmkmeiklkDfjcoioache,
+                        DevelopmentType = DevelopmentType.DevelopmentUnlockEquipment,
                         Params = { { "EquipmentTid", (uint)itemConfig.ID } }
                     });
                 break;

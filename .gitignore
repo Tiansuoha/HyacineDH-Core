@@ -14,6 +14,7 @@ TestResults/
 .vs/
 .idea/
 .vscode/
+.claude/
 *.suo
 *.user
 *.userosscache
@@ -39,4 +40,9 @@ Config/Database/
 .DS_Store
 Thumbs.db
 desktop.ini
-
+# ----------------------------
+# Script / binary output
+# ----------------------------
+*.py
+scripts/
+*.1

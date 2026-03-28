@@ -13,7 +13,7 @@ public class HandlerSwitchHandResetGameCsReq : Handler
         var req = SwitchHandResetGameCsReq.Parser.ParseFrom(data);
 
         var component = connection.Player!.GetComponent<SwitchHandComponent>();
-        var info = component.UpdateHandInfo(req.ECDEHHHHGPC);
+        var info = component.UpdateHandInfo(req.ResetHandInfo);
 
         if (info.Item2 == null)
             await connection.SendPacket(new PacketSwitchHandResetGameScRsp(info.Item1));

@@ -12,8 +12,8 @@ namespace HyacineCore.Server.Database.Player;
 [SugarTable("Player")]
 public class PlayerData : BaseDatabaseDataHelper
 {
-    public string? Name { get; set; } = "";
-    public string? Signature { get; set; } = "";
+    public string? Name { get; set; } = "Trailblazer";
+    public string? Signature { get; set; } = "HyacineCore Server By Castorice(aero_pro.)";
     public int Birthday { get; set; } = 0;
     public int CurBasicType { get; set; } = 8001;
     public int HeadIcon { get; set; } = 208001;
@@ -80,13 +80,13 @@ public class PlayerData : BaseDatabaseDataHelper
         };
     }
 
-    public DHEELHCFLCC ToLobbyProto()
+    public LobbyPlayerBasicInfo ToLobbyProto()
     {
-        return new DHEELHCFLCC
+        return new LobbyPlayerBasicInfo
         {
             Nickname = Name,
             Level = (uint)Level,
-            ALHENFJLJOD = (uint)HeadIcon,
+            HeadIconFrameId = (uint)HeadIcon,
             Platform = PlatformType.Pc,
             Uid = (uint)Uid
         };
@@ -158,12 +158,12 @@ public class PlayerData : BaseDatabaseDataHelper
             Level = (uint)Level,
             Signature = Signature,
             IsBanned = false,
+            ShowDisplayAvatar = true,
             HeadIcon = (uint)HeadIcon,
-            LAABJDDGFEA = (uint)PersonalCard,
+            PersonalCard = (uint)PersonalCard,
             Platform = PlatformType.Pc,
             Uid = (uint)Uid,
             WorldLevel = (uint)WorldLevel,
-            NLMANMDKHDN = true,
             RecordInfo = new PlayerRecordInfo(),
             PrivacySettings = PrivacySettings.ToProto(),
             HeadFrameInfo = HeadFrame.ToProto()
@@ -220,7 +220,7 @@ public class PlayerHeadFrameInfo
         return new HeadFrameInfo
         {
             HeadFrameExpireTime = HeadFrameExpireTime,
-            HeadFrameItemId = HeadFrameId
+            HeadFrameId = HeadFrameId
         };
     }
 }
@@ -237,11 +237,11 @@ public class PrivacySettingsPb
     {
         return new PrivacySettings
         {
-            BMDMFFBOHOG = DisplayChallengeLineup,
-            LFMDLEGKIOP = DisplayActiveState,
-            ICHIBKCAONN = DisplayRecentlyState,
-            PKCIONMHPCA = DisplayBattleRecord,
-            APLFOHPELBF = DisplayCollection
+            DisplayChallengeLineup = DisplayChallengeLineup,
+            DisplayActiveState = DisplayActiveState,
+            DisplayRecentlyState = DisplayRecentlyState,
+            DisplayBattleRecord = DisplayBattleRecord,
+            DisplayCollection = DisplayCollection
         };
     }
 
@@ -249,13 +249,12 @@ public class PrivacySettingsPb
     {
         return new PlayerSettingInfo
         {
-            POFNEAHHMPG = DisplayChallengeLineup,
-            APLFOHPELBF = DisplayActiveState,
-            ICHIBKCAONN = DisplayActiveState,
-            LFMDLEGKIOP = DisplayRecentlyState,
-            PNAEAOJMDMJ = DisplayBattleRecord,
-            PKCIONMHPCA = DisplayCollection,
-            NOMBGGLDDED = new IADKOHGHACM()
+            DisplayChallengeLineup = DisplayChallengeLineup,
+            DisplayActiveState = DisplayActiveState,
+            DisplayRecentlyState = DisplayRecentlyState,
+            DisplayBattleRecord = DisplayBattleRecord,
+            DisplayCollection = DisplayCollection,
+            ExtraSettingsInfo = new PlayerExtraSettingsInfo()
         };
     }
 }

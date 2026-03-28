@@ -10,7 +10,7 @@ public class PacketChallengePeakGroupDataUpdateScNotify : BasePacket
     {
         var proto = new ChallengePeakGroupDataUpdateScNotify
         {
-            ChallengePeakGroup = group
+            ChallengePeakGroupId = group.PeakGroupId
         };
 
         SetData(proto);

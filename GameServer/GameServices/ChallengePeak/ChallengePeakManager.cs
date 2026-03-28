@@ -144,7 +144,7 @@ public class ChallengePeakManager(PlayerInstance player) : BasePlayerManager(pla
             }
             else
             {
-                var targetFrameId = data.PeakStar + 226000;
+                var targetFrameId = data.PeakStar + 226000;  //TODO: 这显然是取巧方案，需要进一步完善逻辑以正确还原官服给予头像框逻辑
                 if (Player.Data.HeadFrame.HeadFrameId < targetFrameId)
                     await Player.SetPlayerHeadFrameId(targetFrameId, long.MaxValue);
             }

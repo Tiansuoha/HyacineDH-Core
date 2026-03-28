@@ -1,4 +1,4 @@
-﻿using HyacineCore.Server.Data;
+using HyacineCore.Server.Data;
 using HyacineCore.Server.Data.Config.Scene;
 using HyacineCore.Server.Data.Excel;
 using HyacineCore.Server.Database.Avatar;
@@ -94,7 +94,7 @@ public class SceneInstance
                 groups.Add(new SceneEntityGroupInfo
                 {
                     GroupId = (uint)entity.Value.GroupId,
-                    JJEEOCOBCKC = { resProperty }
+                    GroupPropertyMap = { resProperty }
                 });
             }
 
@@ -116,7 +116,7 @@ public class SceneInstance
                 groups.Add(new SceneEntityGroupInfo
                 {
                     GroupId = (uint)groupId,
-                    JJEEOCOBCKC = { resProperty }
+                    GroupPropertyMap = { resProperty }
                 });
             }
 

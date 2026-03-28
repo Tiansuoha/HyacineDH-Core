@@ -21,7 +21,7 @@ public class PacketGetRechargeGiftInfoScRsp : BasePacket
                     {
                         x.GiftIDList.Select(h => new BAFNEIDCECF
                         {
-                            Status = BAFNEIDCECF.Types.KIGNFKPDGPA.Types.ICINEONCGFO.Mffndnhcgdo,
+                            Status = ICINEONCGFO.Mffndnhcgdo,
                             Index = (uint)x.GiftIDList.IndexOf(h)
                         })
                     }

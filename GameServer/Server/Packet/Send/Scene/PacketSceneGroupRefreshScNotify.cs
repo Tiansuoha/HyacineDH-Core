@@ -99,8 +99,8 @@ public class PacketSceneGroupRefreshScNotify : BasePacket
             foreach (var data in dataList)
                 group.MPDEGPAMIEI.Add(new MDBADLOEJMP
                 {
-                    BNINLHOKICO = data.NewValue,
-                    JIPGMBMBDFK = data.OldValue,
+                    JIPGMBMBDFK = data.NewValue,
+                    BNINLHOKICO = data.OldValue,
                     GCJKIDIBJHJ = data.PropertyName
                 });
 

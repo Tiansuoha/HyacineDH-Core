@@ -3,9 +3,9 @@ namespace HyacineCore.Server.Util
     public static class IConsole
     {
         public const string PrefixContent = "[HyacineCore]> "; // "[HyacineCore]> "; Before execute command
-        private const string PromptColor = "\e[38;2;244;169;189m";
-        private const string RedColor = "\e[38;2;255;0;0m";
-        private const string ResetColor = "\e[0m";
+        private const string PromptColor = "\u001b[38;2;244;169;189m";
+        private const string RedColor = "\u001b[38;2;255;0;0m";
+        private const string ResetColor = "\u001b[0m";
 
         // coloured prefix
         public static string Prefix => $"{(IsCommandValid ? PromptColor : RedColor)}{PrefixContent}{ResetColor}";
@@ -45,7 +45,7 @@ namespace HyacineCore.Server.Util
         public static void InitConsole()
         {
             if (!IsConsoleAvailable) return;
-            Console.Title = "HyacineCore Console";
+            try { Console.Title = "HyacineCore Console"; } catch { }
         }
 
         public static int GetWidth(string str)
@@ -71,9 +71,16 @@ namespace HyacineCore.Server.Util
             var (left, _) = Console.GetCursorPosition();
             if (left > 0) Console.SetCursorPosition(0, Console.CursorTop);
 
-            Console.Write(input + new string(' ', Console.BufferWidth - length));
+            var padding = Console.BufferWidth - length;
+            if (padding < 0) padding = 0;
+            Console.Write(input + new string(' ', padding));
 
-            Console.SetCursorPosition(length, Console.CursorTop);
+            // Prevent crash on narrow screens (Termux) when text wraps
+            if (length < Console.BufferWidth)
+            {
+                Console.SetCursorPosition(length, Console.CursorTop);
+            }
+            
             CursorIndex = length - GetWidth(PrefixContent);
         }
 
@@ -273,4 +280,3 @@ namespace HyacineCore.Server.Util
         }
     }
 }
-
